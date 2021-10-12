@@ -20,8 +20,8 @@ func TestAddSubcommands(t *testing.T) {
 	sub := toolkit.New("bar")
 
 	cmd.AddSub(sub)
-	if len(cmd.Subs()) != 1 {
-		t.Fatalf("expect %d subcommands, got: %d", 1, len(cmd.Subs()))
+	if len(cmd.Sub()) != 1 {
+		t.Fatalf("expect %d subcommands, got: %d", 1, len(cmd.Sub()))
 	}
 }
 

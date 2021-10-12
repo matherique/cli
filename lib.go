@@ -5,6 +5,7 @@ type Command interface {
 	Desc() string
 	AddSub(sub Command)
 	AddDesc(text string)
+	Sub() []*command
 }
 
 type command struct {
@@ -36,4 +37,4 @@ func (c *command) AddSub(sub *command) {
 }
 
 // Subs return all subcommands added in command
-func (c *command) Subs() []*command { return c.subcmd }
+func (c *command) Sub() []*command { return c.subcmd }
