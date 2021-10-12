@@ -1,10 +1,17 @@
 package toolkit_test
 
-import toolkit "github.com/matherique/cli-toolkit"
+import (
+	"fmt"
 
-func ExampleTeste() {
-	toolkit.A()
+	toolkit "github.com/matherique/cli-toolkit"
+)
+
+func ExampleNewCommand() {
+	cmd := toolkit.New("test", "description of test command")
+	fmt.Println(cmd.Name())
+	fmt.Println(cmd.Desc())
 
 	// Output:
-	// a
+	// test
+	// description of test command
 }
