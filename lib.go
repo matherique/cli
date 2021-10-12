@@ -4,6 +4,7 @@ type Command interface {
 	Name() string
 	Desc() string
 	AddSub(sub Command)
+	AddDesc(text string)
 }
 
 type command struct {
@@ -13,19 +14,23 @@ type command struct {
 	exec   func(args []string) error
 }
 
-func New(name, desc string) *command {
+func New(name string) *command {
 	cmd := new(command)
 	cmd.name = name
-	cmd.desc = desc
 
 	return cmd
 }
 
+// Name return the name of the command
 func (c *command) Name() string { return c.name }
 
 // Desc return the description of the command
 func (c *command) Desc() string { return c.desc }
 
+// AddDesc add description to the command
+func (c *command) AddDesc(text string) { c.desc = text }
+
+// AddSub add a new subcommand to the command
 func (c *command) AddSub(sub *command) {
 	c.subcmd = append(c.subcmd, sub)
 }

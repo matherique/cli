@@ -8,23 +8,29 @@ import (
 
 func TestNewCommand(t *testing.T) {
 	name := "foo"
-	desc := "foo bar"
-	cmd := toolkit.New(name, desc)
+	cmd := toolkit.New(name)
 
 	if cmd.Name() != name {
 		t.Fatalf("expect %s, got: %s", name, cmd.Name())
 	}
-	if cmd.Desc() != desc {
-		t.Fatalf("expect %s, got: %s", desc, cmd.Desc())
-	}
 }
 
 func TestAddSubcommands(t *testing.T) {
-	cmd := toolkit.New("foo", "foo foo")
-	sub := toolkit.New("bar", "bar bar")
+	cmd := toolkit.New("foo")
+	sub := toolkit.New("bar")
 
 	cmd.AddSub(sub)
 	if len(cmd.Subs()) != 1 {
 		t.Fatalf("expect %d subcommands, got: %d", 1, len(cmd.Subs()))
+	}
+}
+
+func TestAddDescription(t *testing.T) {
+	cmd := toolkit.New("foo")
+
+	cmd.AddDesc("foo foo")
+
+	if cmd.Desc() != "foo foo" {
+		t.Fatalf("expect '%s' as description, got '%s'", "foo foo", cmd.Desc())
 	}
 }
