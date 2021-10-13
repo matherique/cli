@@ -34,3 +34,14 @@ func TestAddDescription(t *testing.T) {
 		t.Fatalf("expect '%s' as description, got '%s'", "foo foo", cmd.Desc())
 	}
 }
+
+func TestAddLongDescription(t *testing.T) {
+	ld := "long long foo"
+
+	cmd := toolkit.New("foo")
+	cmd.AddLongDesc(ld)
+
+	if cmd.LongDesc() != ld {
+		t.Fatalf("expect '%s', got '%s'", ld, cmd.LongDesc())
+	}
+}

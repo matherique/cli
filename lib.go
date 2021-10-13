@@ -3,16 +3,19 @@ package toolkit
 type Command interface {
 	Name() string
 	Desc() string
+	Sub() []*command
 	AddSub(sub Command)
 	AddDesc(text string)
-	Sub() []*command
+	LogDesc() string
+	AddLongDesc(text string)
 }
 
 type command struct {
-	subcmd []*command
-	name   string
-	desc   string
-	exec   func(args []string) error
+	subcmd   []*command
+	name     string
+	desc     string
+	longDesc string
+	exec     func(args []string) error
 }
 
 func New(name string) *command {
@@ -38,3 +41,9 @@ func (c *command) AddSub(sub *command) {
 
 // Subs return all subcommands added in command
 func (c *command) Sub() []*command { return c.subcmd }
+
+// LongDesc return the long description
+func (c *command) LongDesc() string { return c.longDesc }
+
+// AddLongDesc return the long description
+func (c *command) AddLongDesc(text string) { c.longDesc = text }
