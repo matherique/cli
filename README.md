@@ -12,15 +12,15 @@ func ls_func(args []string) error {
 }
 
 func main() {
-  cmd := toolkit.New("command")
-  cmd.AddDesc("command description")
+  cmd := toolkit.New("foo")
+  cmd.AddDesc("foot command description")
 
-  subls := cmd.AddSub("ls", ls_func)
-  subls.AddDesc("ls subcommand description")
-
-  err := cmd.Run(os.Args)
+  subcmd := toolkit.New("bar")
+  subls.AddDesc("bar subcommand description")
   
-  if err := nil {
+  cmd.AddSub(subcmd)
+  
+  if err := cmd.Run(os.Args); err != nil {
     fmt.Fprintln(os.Stderr, err)
     os.Exit(1)
   }
