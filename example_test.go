@@ -6,7 +6,7 @@ import (
 	toolkit "github.com/matherique/cli-toolkit"
 )
 
-func ExampleNewCommand() {
+func ExampleNew() {
 	cmd := toolkit.New("foo")
 
 	fmt.Println(cmd.Name())
@@ -15,7 +15,7 @@ func ExampleNewCommand() {
 	// foo
 }
 
-func ExampleAddSubcommands() {
+func ExampleAddSub() {
 	cmd := toolkit.New("foo")
 	sub := toolkit.New("bar")
 
@@ -26,19 +26,19 @@ func ExampleAddSubcommands() {
 	// 1
 }
 
-func ExampleAddDescription() {
+func ExampleSetDesc() {
 	cmd := toolkit.New("foo")
 
-	cmd.AddDesc("foo foo")
+	cmd.SetDesc("foo foo")
 
 	fmt.Println(cmd.Desc())
 	// Output:
 	// foo foo
 }
 
-func ExampleAddLongDescription() {
+func ExampleSetLongDesc() {
 	cmd := toolkit.New("foo")
-	cmd.AddLongDesc("long foo")
+	cmd.SetLongDesc("long foo")
 
 	fmt.Println(cmd.LongDesc())
 
@@ -46,14 +46,14 @@ func ExampleAddLongDescription() {
 	// long foo
 }
 
-func ExampleAddHandler() {
+func ExampleSetHandler() {
 	cmd := toolkit.New("foo")
 	handler := func(args []string) error {
 		fmt.Println("foo handler")
 		return nil
 	}
 
-	cmd.AddHandler(handler)
+	cmd.SetHandler(handler)
 
 	h := cmd.Handler()
 	arg := make([]string, 0)

@@ -11,7 +11,7 @@ func TestCommand(t *testing.T) {
 	subcmd := toolkit.New("bar")
 	cmd.AddSub(subcmd)
 
-	cmd.AddHandler(func(arg []string) error {
+	cmd.SetHandler(func(arg []string) error {
 		// do something
 		return nil
 	})
