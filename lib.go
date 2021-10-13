@@ -8,14 +8,17 @@ type Command interface {
 	AddDesc(text string)
 	LogDesc() string
 	AddLongDesc(text string)
+	AddHandler(fn handler)
 }
+
+type handler = func(args []string) error
 
 type command struct {
 	subcmd   []*command
 	name     string
 	desc     string
 	longDesc string
-	exec     func(args []string) error
+	handler  handler
 }
 
 func New(name string) *command {
@@ -47,3 +50,9 @@ func (c *command) LongDesc() string { return c.longDesc }
 
 // AddLongDesc return the long description
 func (c *command) AddLongDesc(text string) { c.longDesc = text }
+
+// Handler return the handler function that executes when the command
+// subcommand is called
+func (c *command) Handler() handler { return c.handler }
+
+func (c *command) AddHandler(fn handler) { c.handler = fn }

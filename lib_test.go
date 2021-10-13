@@ -45,3 +45,17 @@ func TestAddLongDescription(t *testing.T) {
 		t.Fatalf("expect '%s', got '%s'", ld, cmd.LongDesc())
 	}
 }
+
+func TestAddHandler(t *testing.T) {
+	cmd := toolkit.New("foo")
+	handler := func(args []string) error {
+		// do something
+		return nil
+	}
+
+	cmd.AddHandler(handler)
+
+	if cmd.Handler() == nil {
+		t.Fatalf("expect func to be assigned, but got <nil>")
+	}
+}
