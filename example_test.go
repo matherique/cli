@@ -62,3 +62,21 @@ func ExampleSetHandler() {
 	// Output:
 	// foo handler
 }
+
+func ExampleHasSub() {
+	cmd := toolkit.New("foo")
+	sub := toolkit.New("bar")
+
+	cmd.AddSub(sub)
+
+	s, err := cmd.HasSub("bar")
+
+	if err != nil {
+		fmt.Printf("error %v", err)
+	}
+
+	fmt.Println(s.Name())
+
+	// Output:
+	// bar
+}

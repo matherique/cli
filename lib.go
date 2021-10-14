@@ -1,5 +1,7 @@
 package toolkit
 
+import "fmt"
+
 type Command interface {
 	Name() string
 	Desc() string
@@ -10,6 +12,7 @@ type Command interface {
 	SetLongDesc(text string)
 	Handler() handler
 	SetHandler(fn handler)
+	HasSub(name string) (*command, error)
 }
 
 type handler = func(args []string) error
@@ -46,7 +49,8 @@ func (c *command) AddSub(sub *command) {
 // Subs return all subcommands added in command
 func (c *command) Sub() []*command { return c.subcmd }
 
-// LongDesc return the long description
+// LongDesc return the long description of the command
+// this description will be show when user use '<command> help'
 func (c *command) LongDesc() string { return c.longDesc }
 
 // AddLongDesc return the long description
@@ -57,3 +61,13 @@ func (c *command) SetLongDesc(text string) { c.longDesc = text }
 func (c *command) Handler() handler { return c.handler }
 
 func (c *command) SetHandler(fn handler) { c.handler = fn }
+
+func (c *command) HasSub(name string) (*command, error) {
+	for _, c := range c.Sub() {
+		if c.Name() == name {
+			return c, nil
+		}
+	}
+
+	return nil, fmt.Errorf("no subcommand found")
+}
