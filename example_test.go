@@ -80,3 +80,37 @@ func ExampleHasSub() {
 	// Output:
 	// bar
 }
+
+func ExampleRun() {
+	cmd := toolkit.New("foo")
+	cmd.SetHandler(func(a []string) error {
+		fmt.Println("foo func")
+		return nil
+	})
+
+	sub := toolkit.New("bar")
+	sub.SetHandler(func(a []string) error {
+		fmt.Println("bar func")
+		return nil
+	})
+
+	cmd.AddSub(sub)
+
+	var a []string
+	cmd.Run(a)
+
+	a = []string{"bar"}
+	cmd.Run(a)
+
+	a = []string{"wrong"}
+	err := cmd.Run(a)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// Output:
+	// foo func
+	// bar func
+	// no subcommand found
+}

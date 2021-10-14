@@ -1,6 +1,8 @@
 package toolkit
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Command interface {
 	Name() string
@@ -13,6 +15,7 @@ type Command interface {
 	Handler() handler
 	SetHandler(fn handler)
 	HasSub(name string) (*command, error)
+	Run(a []string) error
 }
 
 type handler = func(args []string) error
@@ -60,8 +63,10 @@ func (c *command) SetLongDesc(text string) { c.longDesc = text }
 // subcommand is called
 func (c *command) Handler() handler { return c.handler }
 
+// SetHandler set the handler to execute when calls the command
 func (c *command) SetHandler(fn handler) { c.handler = fn }
 
+// HasSub search and return the founded command or an error if not found
 func (c *command) HasSub(name string) (*command, error) {
 	for _, c := range c.Sub() {
 		if c.Name() == name {
@@ -70,4 +75,23 @@ func (c *command) HasSub(name string) (*command, error) {
 	}
 
 	return nil, fmt.Errorf("no subcommand found")
+}
+
+func (c *command) Run(args []string) error {
+	var h handler
+
+	if len(args) == 0 {
+		h = c.Handler()
+		return h(args)
+	}
+
+	s, err := c.HasSub(args[0])
+
+	if err != nil {
+		return err
+	}
+
+	h = s.Handler()
+
+	return h(args[1:])
 }
