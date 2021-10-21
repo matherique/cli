@@ -78,11 +78,10 @@ func (c *command) HasSub(name string) (*command, error) {
 	return nil, fmt.Errorf("no subcommand found")
 }
 
+// Run run the command or subcommand based in the os args.
 func (c *command) Run(args []string) error {
-	var h handler
-
 	if len(args) == 0 {
-		h = c.Handler()
+		h := c.Handler()
 		return h(args)
 	}
 
@@ -97,7 +96,5 @@ func (c *command) Run(args []string) error {
 		return err
 	}
 
-	h = s.Handler()
-
-	return h(args[1:])
+	return s.Run(args[1:])
 }
