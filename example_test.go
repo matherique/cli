@@ -83,6 +83,7 @@ func ExampleHasSub() {
 
 func ExampleRun() {
 	cmd := toolkit.New("foo")
+	cmd.SetLongDesc("foo long desc")
 	cmd.SetHandler(func(a []string) error {
 		fmt.Println("foo func")
 		return nil
@@ -109,8 +110,12 @@ func ExampleRun() {
 		fmt.Println(err)
 	}
 
+	a = []string{"help"}
+	cmd.Run(a)
+
 	// Output:
 	// foo func
 	// bar func
 	// no subcommand found
+	// foo long desc
 }

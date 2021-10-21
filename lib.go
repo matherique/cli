@@ -2,6 +2,7 @@ package toolkit
 
 import (
 	"fmt"
+	"os"
 )
 
 type Command interface {
@@ -83,6 +84,11 @@ func (c *command) Run(args []string) error {
 	if len(args) == 0 {
 		h = c.Handler()
 		return h(args)
+	}
+
+	if args[0] == "help" {
+		fmt.Fprintln(os.Stdout, c.LongDesc())
+		return nil
 	}
 
 	s, err := c.HasSub(args[0])
