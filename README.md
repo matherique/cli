@@ -7,10 +7,6 @@
 
 ```go 
 
-func ls_func(args []string) error {
-  // execute ls
-}
-
 func main() {
   cmd := toolkit.New("foo")
   cmd.AddDesc("foot command description")
