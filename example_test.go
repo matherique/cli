@@ -1,61 +1,61 @@
-package toolkit_test
+package cmd_test
 
 import (
 	"fmt"
 
-	toolkit "github.com/matherique/cli-toolkit"
+	cmd "github.com/matherique/cmd"
 )
 
 func ExampleNew() {
-	cmd := toolkit.New("foo")
+	c := cmd.New("foo")
 
-	fmt.Println(cmd.Name())
+	fmt.Println(c.Name())
 
 	// Output:
 	// foo
 }
 
 func ExampleAddSub() {
-	cmd := toolkit.New("foo")
-	sub := toolkit.New("bar")
+	c := cmd.New("foo")
+	sc := cmd.New("bar")
 
-	cmd.AddSub(sub)
-	fmt.Println(len(cmd.Sub()))
+	c.AddSub(sc)
+	fmt.Println(len(c.Sub()))
 
 	// Output:
 	// 1
 }
 
 func ExampleSetDesc() {
-	cmd := toolkit.New("foo")
+	c := cmd.New("foo")
 
-	cmd.SetDesc("foo foo")
+	c.SetDesc("foo foo")
 
-	fmt.Println(cmd.Desc())
+	fmt.Println(c.Desc())
 	// Output:
 	// foo foo
 }
 
 func ExampleSetLongDesc() {
-	cmd := toolkit.New("foo")
-	cmd.SetLongDesc("long foo")
+	c := cmd.New("foo")
+	c.SetLongDesc("long foo")
 
-	fmt.Println(cmd.LongDesc())
+	fmt.Println(c.LongDesc())
 
 	// Output:
 	// long foo
 }
 
 func ExampleSetHandler() {
-	cmd := toolkit.New("foo")
+	c := cmd.New("foo")
 	handler := func(args []string) error {
 		fmt.Println("foo handler")
 		return nil
 	}
 
-	cmd.SetHandler(handler)
+	c.SetHandler(handler)
 
-	h := cmd.Handler()
+	h := c.Handler()
 	arg := make([]string, 0)
 	h(arg)
 
@@ -64,12 +64,12 @@ func ExampleSetHandler() {
 }
 
 func ExampleHasSub() {
-	cmd := toolkit.New("foo")
-	sub := toolkit.New("bar")
+	c := cmd.New("foo")
+	sc := cmd.New("bar")
 
-	cmd.AddSub(sub)
+	c.AddSub(sc)
 
-	s, err := cmd.HasSub("bar")
+	s, err := c.HasSub("bar")
 
 	if err != nil {
 		fmt.Printf("error %v", err)
@@ -82,36 +82,36 @@ func ExampleHasSub() {
 }
 
 func ExampleRun() {
-	cmd := toolkit.New("foo")
-	cmd.SetLongDesc("foo long desc")
-	cmd.SetHandler(func(a []string) error {
+	c := cmd.New("foo")
+	c.SetLongDesc("foo long desc")
+	c.SetHandler(func(a []string) error {
 		fmt.Println("foo func")
 		return nil
 	})
 
-	sub := toolkit.New("bar")
-	sub.SetHandler(func(a []string) error {
+	sc := cmd.New("bar")
+	sc.SetHandler(func(a []string) error {
 		fmt.Println("bar func")
 		return nil
 	})
 
-	cmd.AddSub(sub)
+	c.AddSub(sc)
 
 	var a []string
-	cmd.Run(a)
+	c.Run(a)
 
 	a = []string{"bar"}
-	cmd.Run(a)
+	c.Run(a)
 
 	a = []string{"wrong"}
-	err := cmd.Run(a)
+	err := c.Run(a)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	a = []string{"help"}
-	cmd.Run(a)
+	c.Run(a)
 
 	// Output:
 	// foo func

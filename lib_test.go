@@ -1,17 +1,17 @@
-package toolkit_test
+package cmd_test
 
 import (
 	"testing"
 
-	toolkit "github.com/matherique/cli-toolkit"
+	"github.com/matherique/cmd"
 )
 
 func TestCommand(t *testing.T) {
-	cmd := toolkit.New("foo")
-	subcmd := toolkit.New("bar")
-	cmd.AddSub(subcmd)
+	c := cmd.New("foo")
+	sc := cmd.New("bar")
+	c.AddSub(sc)
 
-	cmd.SetHandler(func(arg []string) error {
+	c.SetHandler(func(arg []string) error {
 		// do something
 		return nil
 	})

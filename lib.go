@@ -1,4 +1,4 @@
-package toolkit
+package cmd
 
 import (
 	"fmt"
