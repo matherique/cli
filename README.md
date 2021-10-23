@@ -2,10 +2,17 @@
 
  > toolbox to create CLI in go
 
-
 ## Usage 
 
 ```go 
+package main
+
+import (
+  "fmt"
+  "os"
+
+  "github.com/matherique/cli-toolbox"
+)
 
 func main() {
   cmd := toolkit.New("foo")
@@ -23,4 +30,13 @@ func main() {
 } 
 
 ```
+
+## Author
+
+👤 **Matheus Henrique**
+
+- Email: matherique@gmail.com
+- Github: [@matherique](https://github.com/matherique)
+- LinkedIn: [@matherique](https://linkedin.com/in/matherique)
+
 
