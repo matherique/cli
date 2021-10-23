@@ -1,5 +1,8 @@
 # 🧰 CLI toolbox
 
+![example workflow](https://github.com/matherique/cli-toolbox/actions/workflows/test.yml/badge.svg)
+
+
  > toolbox to create CLI in go
 
 ## Usage 
