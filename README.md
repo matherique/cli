@@ -1,9 +1,9 @@
-# 🧰 CLI toolbox
+# 🧰 CMD toolbox
 
-![example workflow](https://github.com/matherique/cli-toolbox/actions/workflows/test.yml/badge.svg)
+![example workflow](https://github.com/matherique/cmd/actions/workflows/test.yml/badge.svg)
 
 
- > toolbox to create CLI in go
+ > a set of tools to create a CLI in go
 
 ## Usage 
 
@@ -14,19 +14,19 @@ import (
   "fmt"
   "os"
 
-  "github.com/matherique/cli-toolbox"
+  "github.com/matherique/cmd"
 )
 
 func main() {
-  cmd := toolkit.New("foo")
-  cmd.AddDesc("foot command description")
+  c := cmd.New("foo")
+  c.AddDesc("foot command description")
 
-  subcmd := toolkit.New("bar")
-  subls.AddDesc("bar subcommand description")
+  sc := cmd.New("bar")
+  sc.AddDesc("bar subcommand description")
   
-  cmd.AddSub(subcmd)
+  c.AddSub(sc)
   
-  if err := cmd.Run(os.Args); err != nil {
+  if err := c.Run(os.Args); err != nil {
     fmt.Fprintln(os.Stderr, err)
     os.Exit(1)
   }
