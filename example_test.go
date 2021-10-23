@@ -15,7 +15,7 @@ func ExampleNew() {
 	// foo
 }
 
-func ExampleAddSub() {
+func ExampleCommand_AddSub() {
 	c := cmd.New("foo")
 	sc := cmd.New("bar")
 
@@ -26,7 +26,7 @@ func ExampleAddSub() {
 	// 1
 }
 
-func ExampleSetDesc() {
+func ExampleCommand_SetDesc() {
 	c := cmd.New("foo")
 
 	c.SetDesc("foo foo")
@@ -36,7 +36,7 @@ func ExampleSetDesc() {
 	// foo foo
 }
 
-func ExampleSetLongDesc() {
+func ExampleCommand_SetLongDesc() {
 	c := cmd.New("foo")
 	c.SetLongDesc("long foo")
 
@@ -46,7 +46,7 @@ func ExampleSetLongDesc() {
 	// long foo
 }
 
-func ExampleSetHandler() {
+func ExampleCommand_SetHandler() {
 	c := cmd.New("foo")
 	handler := func(args []string) error {
 		fmt.Println("foo handler")
@@ -63,7 +63,7 @@ func ExampleSetHandler() {
 	// foo handler
 }
 
-func ExampleHasSub() {
+func ExampleCommand_HasSub() {
 	c := cmd.New("foo")
 	sc := cmd.New("bar")
 
@@ -81,7 +81,7 @@ func ExampleHasSub() {
 	// bar
 }
 
-func ExampleRun() {
+func ExampleCommand_Run() {
 	c := cmd.New("foo")
 	c.SetLongDesc("foo long desc")
 	c.SetHandler(func(a []string) error {
