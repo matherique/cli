@@ -90,6 +90,7 @@ func ExampleCommand_Run() {
 	})
 
 	sc := cmd.New("bar")
+	sc.SetLongDesc("bar long desc")
 	sc.SetHandler(func(a []string) error {
 		fmt.Println("bar func")
 		return nil
@@ -103,7 +104,15 @@ func ExampleCommand_Run() {
 	a = []string{"bar"}
 	c.Run(a)
 
+	a = []string{"help"}
+	c.Run(a)
+
+	a = []string{"bar", "help"}
+	c.Run(a)
+
 	// Output:
 	// foo func
 	// bar func
+	// foo long desc
+	// bar long desc
 }
