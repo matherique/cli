@@ -15,7 +15,7 @@ type Command interface {
 	SetLongDesc(text string)
 	Handler() handler
 	SetHandler(fn handler)
-	HasSub(name string) (Command, error)
+	HasSub(name string) Command
 	Run(a []string) error
 }
 
@@ -68,14 +68,14 @@ func (c *command) Handler() handler { return c.handler }
 func (c *command) SetHandler(fn handler) { c.handler = fn }
 
 // HasSub search and return the founded command or an error if not found
-func (c *command) HasSub(name string) (Command, error) {
+func (c *command) HasSub(name string) Command {
 	for _, c := range c.Sub() {
 		if c.Name() == name {
-			return c, nil
+			return c
 		}
 	}
 
-	return nil, fmt.Errorf("no subcommand found")
+	return nil
 }
 
 // Run run the command or subcommand based in the os args.
@@ -92,7 +92,7 @@ func (c *command) Run(args []string) error {
 			return nil
 		}
 
-		s, _ := c.HasSub(args[0])
+		s := c.HasSub(args[0])
 
 		if s != nil {
 			return s.Run(args[1:])
