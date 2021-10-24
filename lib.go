@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 )
 
 type Command interface {
@@ -80,21 +79,19 @@ func (c *command) HasSub(name string) (*command, error) {
 
 // Run run the command or subcommand based in the os args.
 func (c *command) Run(args []string) error {
+	h := c.Handler()
+
 	if len(args) == 0 {
-		h := c.Handler()
 		return h(args)
 	}
 
-	if args[0] == "help" {
-		fmt.Fprintln(os.Stdout, c.LongDesc())
-		return nil
+	if len(args) > 0 {
+		s, _ := c.HasSub(args[0])
+
+		if s != nil {
+			return s.Run(args[1:])
+		}
 	}
 
-	s, err := c.HasSub(args[0])
-
-	if err != nil {
-		return err
-	}
-
-	return s.Run(args[1:])
+	return h(args)
 }

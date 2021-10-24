@@ -103,19 +103,7 @@ func ExampleCommand_Run() {
 	a = []string{"bar"}
 	c.Run(a)
 
-	a = []string{"wrong"}
-	err := c.Run(a)
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	a = []string{"help"}
-	c.Run(a)
-
 	// Output:
 	// foo func
 	// bar func
-	// no subcommand found
-	// foo long desc
 }
