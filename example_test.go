@@ -69,11 +69,7 @@ func ExampleCommand_HasSub() {
 
 	c.AddSub(sc)
 
-	s, err := c.HasSub("bar")
-
-	if err != nil {
-		fmt.Printf("error %v", err)
-	}
+	s := c.HasSub("bar")
 
 	fmt.Println(s.Name())
 
