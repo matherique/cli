@@ -1,6 +1,8 @@
 package cmd_test
 
 import (
+	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/matherique/cmd"
@@ -8,12 +10,39 @@ import (
 
 func TestCommand(t *testing.T) {
 	c := cmd.New("foo")
-	sc := cmd.New("bar")
-	c.AddSub(sc)
-
 	c.SetHandler(func(arg []string) error {
-		// do something
 		return nil
 	})
 
+	bar := cmd.New("bar")
+	bar.SetHandler(func(args []string) error {
+		return fmt.Errorf("custom error")
+	})
+
+	baz := cmd.New("baz")
+	baz.SetHandler(func(args []string) error {
+		return nil
+	})
+
+	c.AddSub(bar)
+	c.AddSub(baz)
+
+	ts := []struct {
+		args []string
+		err  error
+	}{
+		{[]string{"baz"}, nil},
+		{[]string{"bar"}, fmt.Errorf("custom error")},
+	}
+
+	for _, tt := range ts {
+		err := c.Run(tt.args)
+
+		if tt.err != nil {
+			if errors.Is(err, tt.err) {
+				t.Fatalf("expect %v, got %v", tt.err, err)
+			}
+		}
+
+	}
 }
