@@ -8,20 +8,20 @@ type Command interface {
 	Name() string
 	Desc() string
 	SetDesc(text string)
-	Sub() []*command
+	Sub() []Command
 	AddSub(sub Command)
-	LogDesc() string
+	LongDesc() string
 	SetLongDesc(text string)
 	Handler() handler
 	SetHandler(fn handler)
-	HasSub(name string) (*command, error)
+	HasSub(name string) (Command, error)
 	Run(a []string) error
 }
 
 type handler = func(args []string) error
 
 type command struct {
-	subcmd   []*command
+	subcmd   []Command
 	name     string
 	desc     string
 	longDesc string
@@ -45,12 +45,12 @@ func (c *command) Desc() string { return c.desc }
 func (c *command) SetDesc(text string) { c.desc = text }
 
 // AddSub add a new subcommand to the command
-func (c *command) AddSub(sub *command) {
+func (c *command) AddSub(sub Command) {
 	c.subcmd = append(c.subcmd, sub)
 }
 
 // Subs return all subcommands added in command
-func (c *command) Sub() []*command { return c.subcmd }
+func (c *command) Sub() []Command { return c.subcmd }
 
 // LongDesc return the long description of the command
 // this description will be show when user use '<command> help'
@@ -67,7 +67,7 @@ func (c *command) Handler() handler { return c.handler }
 func (c *command) SetHandler(fn handler) { c.handler = fn }
 
 // HasSub search and return the founded command or an error if not found
-func (c *command) HasSub(name string) (*command, error) {
+func (c *command) HasSub(name string) (Command, error) {
 	for _, c := range c.Sub() {
 		if c.Name() == name {
 			return c, nil
