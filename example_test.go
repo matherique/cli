@@ -73,15 +73,22 @@ func ExampleCommand_HasSub() {
 
 	fmt.Println(s.Name())
 
+	s = c.HasSub("baz")
+
+	if s == nil {
+		fmt.Println("nil")
+	}
+
 	// Output:
 	// bar
+	// nil
 }
 
 func ExampleCommand_Run() {
 	c := cmd.New("foo")
 	c.SetLongDesc("foo long desc")
 	c.SetHandler(func(a []string) error {
-		fmt.Println("foo func")
+		fmt.Println("foo func", a)
 		return nil
 	})
 
@@ -106,9 +113,13 @@ func ExampleCommand_Run() {
 	a = []string{"bar", "help"}
 	c.Run(a)
 
+	a = []string{"arg1", "arg2"}
+	c.Run(a)
+
 	// Output:
-	// foo func
+	// foo func []
 	// bar func
 	// foo long desc
 	// bar long desc
+	// foo func [arg1 arg2]
 }
