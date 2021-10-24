@@ -26,7 +26,8 @@ func main() {
   
   c.AddSub(sc)
   
-  if err := c.Run(os.Args); err != nil {
+  // removing the binary name using os.Args[1:]
+  if err := c.Run(os.Args[1:]); err != nil {
     fmt.Fprintln(os.Stderr, err)
     os.Exit(1)
   }
