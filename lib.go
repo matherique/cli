@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 type Command interface {
@@ -88,7 +89,7 @@ func (c *command) Run(args []string) error {
 
 	if len(args) > 0 {
 		if args[0] == "help" {
-			fmt.Fprintln(os.Stdout, c.LongDesc())
+			fmt.Fprintln(os.Stdout, strings.Trim(c.LongDesc(), "\n"))
 			return nil
 		}
 
