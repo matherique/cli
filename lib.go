@@ -19,6 +19,8 @@ type Command interface {
 	HasSub(name string) Command
 	Run(a []string) error
 	HasAlias(name string) bool
+	SetAlias(alias ...string)
+	AddAlias(alias ...string)
 }
 
 type handler = func(args []string) error
@@ -70,6 +72,16 @@ func (c *command) Handler() handler { return c.handler }
 
 // SetHandler set the handler to execute when calls the command
 func (c *command) SetHandler(fn handler) { c.handler = fn }
+
+// SetAlias set the alias for the command
+func (c *command) SetAlias(alias ...string) {
+	c.aliases = alias
+}
+
+// AddAlias add alias to the command
+func (c *command) AddAlias(alias ...string) {
+	c.aliases = append(c.aliases, alias...)
+}
 
 // HasAlias search and return if the command has the alias
 func (c *command) HasAlias(name string) bool {
