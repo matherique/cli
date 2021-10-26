@@ -71,12 +71,14 @@ func (c *command) Handler() handler { return c.handler }
 // SetHandler set the handler to execute when calls the command
 func (c *command) SetHandler(fn handler) { c.handler = fn }
 
+// HasAlias search and return if the command has the alias
 func (c *command) HasAlias(name string) bool {
 	for _, a := range c.aliases {
 		if a == name {
 			return true
 		}
 	}
+
 	return false
 }
 
