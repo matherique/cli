@@ -18,6 +18,7 @@ type Command interface {
 	SetHandler(fn handler)
 	HasSub(name string) Command
 	Run(a []string) error
+	HasAlias(name string) bool
 }
 
 type handler = func(args []string) error
@@ -28,11 +29,13 @@ type command struct {
 	desc     string
 	longDesc string
 	handler  handler
+	aliases  []string
 }
 
-func New(name string) *command {
+func New(name string, alias ...string) *command {
 	cmd := new(command)
 	cmd.name = name
+	cmd.aliases = alias
 
 	return cmd
 }
@@ -68,10 +71,19 @@ func (c *command) Handler() handler { return c.handler }
 // SetHandler set the handler to execute when calls the command
 func (c *command) SetHandler(fn handler) { c.handler = fn }
 
+func (c *command) HasAlias(name string) bool {
+	for _, a := range c.aliases {
+		if a == name {
+			return true
+		}
+	}
+	return false
+}
+
 // HasSub search and return the founded command or an error if not found
 func (c *command) HasSub(name string) Command {
 	for _, c := range c.Sub() {
-		if c.Name() == name {
+		if c.Name() == name || c.HasAlias(name) {
 			return c
 		}
 	}
