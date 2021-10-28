@@ -84,6 +84,46 @@ func ExampleCommand_HasSub() {
 	// nil
 }
 
+func ExampleCommand_HasAlias() {
+	c := cmd.New("foo", "f")
+
+	alias := c.HasAlias("f")
+
+	if alias {
+		fmt.Println(alias)
+	}
+
+	alias = c.HasAlias("b")
+
+	if !alias {
+		fmt.Println(alias)
+	}
+
+	// Output:
+	// true
+	// false
+}
+
+func ExampleCommand_SetAlias() {
+	c := cmd.New("foo")
+	c.SetAlias("f")
+
+	fmt.Println(c.HasAlias("f"))
+
+	// Output:
+	// true
+}
+
+func ExampleCommand_AddAlias() {
+	c := cmd.New("foo")
+	c.AddAlias("f")
+
+	fmt.Println(c.HasAlias("f"))
+
+	// Output:
+	// true
+}
+
 func ExampleCommand_Run() {
 	c := cmd.New("foo")
 	c.SetLongDesc("foo long desc")
