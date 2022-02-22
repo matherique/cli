@@ -6,6 +6,18 @@ import (
 	cmd "github.com/matherique/cmd"
 )
 
+type foo struct{}
+func (foo) Handler(a []string) error {
+	fmt.Println("foo", a)
+  return nil
+}
+
+type bar struct{}
+func (bar) Handler(a []string) error {
+	fmt.Println("bar", a)
+  return nil
+}
+
 func ExampleNew() {
 	c := cmd.New("foo")
 
@@ -48,19 +60,15 @@ func ExampleCommand_SetLongDesc() {
 
 func ExampleCommand_SetHandler() {
 	c := cmd.New("foo")
-	handler := func(args []string) error {
-		fmt.Println("foo handler")
-		return nil
-	}
 
-	c.SetHandler(handler)
+	c.SetHandler(foo{})
 
 	h := c.Handler()
 	arg := make([]string, 0)
 	h(arg)
 
 	// Output:
-	// foo handler
+	// foo []
 }
 
 func ExampleCommand_HasSub() {
@@ -127,17 +135,11 @@ func ExampleCommand_AddAlias() {
 func ExampleCommand_Run() {
 	c := cmd.New("foo")
 	c.SetLongDesc("foo long desc")
-	c.SetHandler(func(a []string) error {
-		fmt.Println("foo func", a)
-		return nil
-	})
+	c.SetHandler(foo{})
 
 	sc := cmd.New("bar")
 	sc.SetLongDesc("bar long desc")
-	sc.SetHandler(func(a []string) error {
-		fmt.Println("bar func")
-		return nil
-	})
+	sc.SetHandler(bar{})
 
 	c.AddSub(sc)
 
@@ -157,9 +159,9 @@ func ExampleCommand_Run() {
 	c.Run(a)
 
 	// Output:
-	// foo func []
-	// bar func
+	// foo []
+	// bar []
 	// foo long desc
 	// bar long desc
-	// foo func [arg1 arg2]
+	// foo [arg1 arg2]
 }

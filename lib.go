@@ -6,6 +6,12 @@ import (
 	"strings"
 )
 
+type Handler interface {
+  Handler(args []string) error
+}
+
+type handlerFunc func (args []string) error
+
 type Command interface {
 	Name() string
 	Desc() string
@@ -14,8 +20,8 @@ type Command interface {
 	AddSub(sub Command)
 	LongDesc() string
 	SetLongDesc(text string)
-	Handler() handler
-	SetHandler(fn handler)
+	Handler() handlerFunc
+	SetHandler(fn Handler)
 	HasSub(name string) Command
 	Run(a []string) error
 	HasAlias(name string) bool
@@ -23,14 +29,12 @@ type Command interface {
 	AddAlias(alias ...string)
 }
 
-type handler = func(args []string) error
-
 type command struct {
 	subcmd   []Command
 	name     string
 	desc     string
 	longDesc string
-	handler  handler
+	handler  handlerFunc
 	aliases  []string
 }
 
@@ -68,10 +72,10 @@ func (c *command) SetLongDesc(text string) { c.longDesc = text }
 
 // Handler return the handler function that executes when the command
 // subcommand is called
-func (c *command) Handler() handler { return c.handler }
+func (c *command) Handler() handlerFunc { return c.handler }
 
 // SetHandler set the handler to execute when calls the command
-func (c *command) SetHandler(fn handler) { c.handler = fn }
+func (c *command) SetHandler(h Handler) { c.handler = h.Handler }
 
 // SetAlias set the alias for the command
 func (c *command) SetAlias(alias ...string) {

@@ -8,31 +8,30 @@ import (
 	"github.com/matherique/cmd"
 )
 
+type baz struct{}
+func (baz) Handler(a []string) error {
+  return fmt.Errorf("custom error")
+}
+
 func TestCommand(t *testing.T) {
 	c := cmd.New("foo")
-	c.SetHandler(func(arg []string) error {
-		return nil
-	})
+	c.SetHandler(foo{})
 
-	bar := cmd.New("bar")
-	bar.SetHandler(func(args []string) error {
-		return fmt.Errorf("custom error")
-	})
+	br := cmd.New("bar")
+	br.SetHandler(bar{})
 
-	baz := cmd.New("baz")
-	baz.SetHandler(func(args []string) error {
-		return nil
-	})
+	bz := cmd.New("baz")
+	bz.SetHandler(baz{})
 
-	c.AddSub(bar)
-	c.AddSub(baz)
+	c.AddSub(br)
+	c.AddSub(bz)
 
 	ts := []struct {
 		args []string
 		err  error
 	}{
-		{[]string{"baz"}, nil},
-		{[]string{"bar"}, fmt.Errorf("custom error")},
+		{[]string{"bar"}, nil},
+		{[]string{"baz"}, fmt.Errorf("custom error")},
 	}
 
 	for _, tt := range ts {
